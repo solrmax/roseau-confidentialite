@@ -91,5 +91,12 @@ async function callback() {
   } catch { await reset(); status('Connexion expirée ou invalide. Recommencez avec le bouton Google ci-dessous.'); }
 }
 window.addEventListener('pagehide', () => { session = null; });
+window.addEventListener('pageshow', event => {
+  if (event.persisted) {
+    reset();
+    byId('login').disabled = false;
+    status('Connexion annulée ou expirée. Reconnectez-vous pour continuer.');
+  }
+});
 if (window.top !== window.self) { byId('login').disabled = true; status('Ouvrez cette page directement dans votre navigateur.'); }
 else callback();
